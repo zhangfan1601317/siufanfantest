@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mBtnPlay;
     private Button mBtnConvert;
 
+    AudioRecordTest mAudioRecordTest;
+    AudioPlayTest mAudioPlayTest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBtnConvert.setOnClickListener(this);
         mBtnPlay = (Button) findViewById(R.id.btn_play);
         mBtnPlay.setOnClickListener(this);
+
+        mAudioRecordTest = new AudioRecordTest(getApplicationContext());
+        mAudioPlayTest = new AudioPlayTest(getApplicationContext());
     }
 
     @Override
@@ -60,17 +66,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
-        AudioRecordTest audioRecordTest = new AudioRecordTest(getApplicationContext());
-        AudioPlayTest audioPlayTest = new AudioPlayTest(getApplicationContext());
         switch(v.getId()){
             case R.id.btn_control:
                 Button button = (Button)v;
                 if(button.getText().toString().equals(getString(R.string.start_record))) {
                     button.setText(getString(R.string.stop_record));
-                    audioRecordTest.startRecord();
+                    mAudioRecordTest.startRecord();
                 } else{
                     button.setText(getString(R.string.start_record));
-                    audioRecordTest.stopRecord();
+                    mAudioRecordTest.stopRecord();
                 }
                 break;
             case R.id.btn_convert:
@@ -91,11 +95,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String string = btn.getText().toString();
                 if (string.equals(getString(R.string.start_play))) {
                     btn.setText(getString(R.string.stop_play));
-                    audioPlayTest.playInModeStream();
+                    mAudioPlayTest.playInModeStream();
                     //playInModeStatic();
+                    Log.i(TAG, "start play");
                 } else {
                     btn.setText(getString(R.string.start_play));
-                    audioPlayTest.stopPlay();
+                    mAudioPlayTest.stopPlay();
+                    Log.i(TAG, "stop play");
                 }
                 break;
             default:
